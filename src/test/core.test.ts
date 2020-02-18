@@ -30,6 +30,7 @@ describe('TransactionPayload', () => {
         const pubTo = secp256r1.publicKeyCreate(Buffer.from(privTo, 'hex'), true);
         const keyFrom = new CPXKey(pubFrom);
         const keyTo = new CPXKey(pubTo);
+        const timestamp = Long.fromNumber(Date.now());
         const expectedResult = "0000000101dbfb9804c00d94875b4300cf41b6bb18d059e661edefb082ed2e9487041abe8a28a5363c61d66bd50810a741a4627800000000000000000001000602ba7def3000030493e0";
         // run
         const tx = new TransactionPayload(
@@ -41,9 +42,11 @@ describe('TransactionPayload', () => {
             new Long(1),
             Array.from([0]),
             new FixedNumber(3, FRACTION.KGP),
-            new FixedNumber(300, FRACTION.KP));
+            new FixedNumber(300, FRACTION.KP),
+            timestamp);
         // verify
-        expect(tx.toHex()).toEqual(expectedResult);
+        console.log(tx.toHex());
+        expect(tx.toHex()).toEqual(`${expectedResult}${Buffer.from(timestamp.toBytes()).toString("hex")}`);
     });
 
 });

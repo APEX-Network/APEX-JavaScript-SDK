@@ -244,7 +244,7 @@ export const signWithLedger = async (data: string, acct: number = 0): Promise<st
     try {
         const signature = Buffer.from(await ledger.getSignature(data, acct)).toString('hex');
         const signature_length = Buffer.from(signature).length.toString(16);
-        return data + signature_length + signature;
+        return `${data}${signature_length}${signature}`;
     } finally {
         await ledger.close();
     }

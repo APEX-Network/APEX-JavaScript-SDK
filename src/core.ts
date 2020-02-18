@@ -80,9 +80,11 @@ export class TransactionPayload {
     data: number[];
     gasPrice: FixedNumber;
     gasLimit: FixedNumber;
+    timestamp: Long;
 
     constructor(version: string, txType: string, fromPubKeyHash: CPXKey, toPubKeyHash: CPXKey,
-                amount: FixedNumber, nonce: Long, data: number[], gasPrice: FixedNumber, gasLimit: FixedNumber) {
+                amount: FixedNumber, nonce: Long, data: number[], gasPrice: FixedNumber, gasLimit: FixedNumber,
+                timestamp: Long) {
         this.version = version;
         this.txType = txType;
         this.fromPubKeyHash = fromPubKeyHash;
@@ -92,13 +94,15 @@ export class TransactionPayload {
         this.data = data;
         this.gasPrice = gasPrice;
         this.gasLimit = gasLimit;
+        this.timestamp = timestamp;
     }
 
     toHex(){
         return `${this.version}${this.txType}${this.toPubKeyHash.getScriptHash()}`+
         `${this.fromPubKeyHash.getScriptHash()}${this.amount.toHex()}`+
         `${Buffer.from(this.nonce.toBytes()).toString("hex")}`+
-        `${this.data.length > 1 ? getHexFromBytes(this.data) : "00"}${this.gasPrice.toHex()}${this.gasLimit.toHex()}`;
+        `${this.data.length > 1 ? getHexFromBytes(this.data) : "00"}${this.gasPrice.toHex()}${this.gasLimit.toHex()}`+
+        `${Buffer.from(this.timestamp.toBytes()).toString("hex")}`;
     }
 
 }
