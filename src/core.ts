@@ -1,4 +1,3 @@
-
 import Long from 'long'
 import BigInteger from 'bigi'
 import Base58check from 'base58check'
@@ -15,7 +14,7 @@ export const FRACTION = {
 };
 
 export const VERSION = {
-    1: '00000001'
+    ONE: "00000001"
 };
 
 export const TX_TYPE = {
@@ -28,9 +27,9 @@ export const TX_TYPE = {
 };
 
 function getHexFromBytes(bytes: number[]) {
-    const bytes_hex = Buffer.from(bytes).toString("hex");
     const length_hex = bytes.length < 16 ? "0" + bytes.length.toString(16) : bytes.length.toString(16);
-    return length_hex + bytes_hex;
+    const bytes_hex = Buffer.from(bytes).toString("hex");
+    return `${length_hex}${bytes_hex}`;
 }
 
 export class FixedNumber {
@@ -42,7 +41,7 @@ export class FixedNumber {
     }
 
     toHex(){
-        return getHexFromBytes(BigInteger(this.value).toByteArray());
+        return getHexFromBytes(BigInteger(this.value.toString()).toByteArray());
     }
 
 }
@@ -96,11 +95,10 @@ export class TransactionPayload {
     }
 
     toHex(){
-        let hex_arr = [];
-        hex_arr.push(this.version);
-        hex_arr.push(this.txType);
-        hex_arr.push(this.toPubKeyHash);
-        hex_arr.push(this.fromPubKeyHash);
+        return `${this.version}${this.txType}${this.toPubKeyHash.getScriptHash()}`+
+        `${this.fromPubKeyHash.getScriptHash()}${this.amount.toHex()}`+
+        `${Buffer.from(this.nonce.toBytes()).toString("hex")}`+
+        `${this.data.length > 1 ? getHexFromBytes(this.data) : "00"}${this.gasPrice.toHex()}${this.gasLimit.toHex()}`;
     }
 
 }

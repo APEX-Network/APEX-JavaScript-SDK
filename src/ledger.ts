@@ -204,14 +204,12 @@ const assembleSignature = (response: string): string => {
     const r = ss.readVarBytes();
     ss.read(1);
     const s = ss.readVarBytes();
-
     // We will need to ensure both integers are 32 bytes long
     const integers = [r, s].map(i => {
         if (i.length < 64) i = i.padStart(64, '0');
         if (i.length > 64) i = i.substr(-64);
         return i;
     });
-
     return integers.join('');
 };
 
