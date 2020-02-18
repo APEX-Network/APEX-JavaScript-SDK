@@ -22,7 +22,7 @@ describe('CPXKey', () => {
 
 describe('TransactionPayload', () => {
 
-    test('verify address creation', () => {
+    test('verify payload creation', () => {
         // setup
         const privFrom = "319c325b626dd10ae86bbfd4236dca0d93c84f72f6fbacf292cdc804ec831e9a";
         const privTo = "97b7c5875b8a5207e0cdf5b4050cb8215065ddcb36622bf733d55eca40250c39";
